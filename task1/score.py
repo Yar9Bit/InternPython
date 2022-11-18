@@ -52,15 +52,18 @@ game_stamps = generate_game()
 
 
 def get_score(game_stamps, offset):
-    away = game_stamps[offset].get('score').get('away')
-    home = game_stamps[offset].get('score').get('home')
-    offset = game_stamps[offset].get('offset')
-    if home | away == 0:
-        return 'Нет очков команд'
-    else:
-        # for _ in game_stamps:
-        #   print(_)
-        return f'Счет команд при offset равным {offset}', home, away
+    offset_low = 0
+    offset_high = len(game_stamps) - 1
+    while offset_low < offset_high:
+        offset_middle = (offset_low + offset_high) // 2
+        score = game_stamps[offset_middle]
+        if score["offset"] == offset:
+            return score
+        elif score["offset"] >= offset:
+            offset_high = offset_middle - 1
+        else:
+            offset_low = offset_middle + 1
 
 
-pprint(get_score(game_stamps, offset=TIMESTAMPS_COUNT))
+s = get_score(game_stamps, 98789)
+pprint(s)
