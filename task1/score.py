@@ -21,8 +21,7 @@ INITIAL_STAMP = {
 
 def generate_stamp(previous_value):
     score_changed = random.random() > 1 - PROBABILITY_SCORE_CHANGED
-    home_score_change = 1 if score_changed and random.random() > 1 - \
-                             PROBABILITY_HOME_SCORE else 0
+    home_score_change = 1 if score_changed and random.random() > 1 - PROBABILITY_HOME_SCORE else 0
     away_score_change = 1 if score_changed and not home_score_change else 0
     offset_change = math.floor(random.random() * OFFSET_MAX_STEP) + 1
 
@@ -51,19 +50,33 @@ game_stamps = generate_game()
 # pprint(game_stamps)
 
 
-def get_score(game_stamps, offset):
+def get_score(game_stamps, offset: int) -> tuple:
     offset_low = 0
     offset_high = len(game_stamps) - 1
-    while offset_low < offset_high:
+    offset_middle = (offset_low + offset_high) // 2
+    while offset_low <= offset_high:
         offset_middle = (offset_low + offset_high) // 2
         score = game_stamps[offset_middle]
         if score["offset"] == offset:
-            return score
-        elif score["offset"] >= offset:
-            offset_high = offset_middle - 1
+            home = score["score"]["home"]
+            away = score["score"]["away"]
+            return home, away
         else:
-            offset_low = offset_middle + 1
+            if offset < score["offset"]:
+                offset_high = offset_middle - 1
+            elif offset > score["offset"]:
+                offset_low = offset_middle + 1
+    if offset < 0:
+        score = game_stamps[offset_low]
+        home = score["score"]["home"]
+        away = score["score"]["away"]
+        return home, away
+    else:
+        score = game_stamps[offset_middle - 1]
+        home = score["score"]["home"]
+        away = score["score"]["away"]
+        return home, away
 
 
-s = get_score(game_stamps, 98789)
+s = get_score(generate_game(), 0)
 pprint(s)
