@@ -52,31 +52,23 @@ game_stamps = generate_game()
 
 def get_score(game_stamps, offset: int) -> tuple:
     offset_low = 0
+    offset_middle = 0
     offset_high = len(game_stamps) - 1
-    offset_middle = (offset_low + offset_high) // 2
+    score = game_stamps[offset_middle]
+    home = score["score"]["home"]
+    away = score["score"]["away"]
     while offset_low <= offset_high:
         offset_middle = (offset_low + offset_high) // 2
         score = game_stamps[offset_middle]
         if score["offset"] == offset:
-            home = score["score"]["home"]
-            away = score["score"]["away"]
             return home, away
         else:
             if offset < score["offset"]:
                 offset_high = offset_middle - 1
             elif offset > score["offset"]:
                 offset_low = offset_middle + 1
-    if offset < 0:
-        score = game_stamps[offset_low]
-        home = score["score"]["home"]
-        away = score["score"]["away"]
-        return home, away
-    else:
-        score = game_stamps[offset_middle - 1]
-        home = score["score"]["home"]
-        away = score["score"]["away"]
-        return home, away
+    return home, away
 
 
-s = get_score(generate_game(), 0)
+s = get_score(generate_game(), 115)
 pprint(s)
