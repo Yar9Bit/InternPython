@@ -1,6 +1,7 @@
 from pprint import pprint
 import random
 import math
+import bisect
 
 TIMESTAMPS_COUNT = 50000
 
@@ -50,25 +51,19 @@ game_stamps = generate_game()
 # pprint(game_stamps)
 
 
-def get_score(game_stamps, offset: int) -> tuple:
-    offset_low = 0
-    offset_middle = 0
-    offset_high = len(game_stamps) - 1
-    score = game_stamps[offset_middle]
-    home = score["score"]["home"]
-    away = score["score"]["away"]
-    while offset_low <= offset_high:
-        offset_middle = (offset_low + offset_high) // 2
-        score = game_stamps[offset_middle]
-        if score["offset"] == offset:
-            return home, away
-        else:
-            if offset < score["offset"]:
-                offset_high = offset_middle - 1
-            elif offset > score["offset"]:
-                offset_low = offset_middle + 1
+def get_score(game_stamps, offset: int):
+    index = bisect.bisect_left([stamps["offset"] for stamps in game_stamps], offset, hi=len(game_stamps)-1)
+    stamp = game_stamps[index]
+    home = stamp["score"]["home"]
+    away = stamp["score"]["away"]
+    offsets = stamp["offset"]
+    if offset == offsets:
+        return away, home
+    if offsets > offset:
+        stamp = game_stamps[index-1]
     return home, away
 
 
-s = get_score(generate_game(), 115)
+
+s = get_score(generate_game(), 60001)
 pprint(s)
