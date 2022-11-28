@@ -51,7 +51,7 @@ game_stamps = generate_game()
 # pprint(game_stamps)
 
 
-def get_score(game_stamps, offset: int):
+def get_score(game_stamps: list, offset: int):
     index = bisect.bisect_left([stamps["offset"] for stamps in game_stamps], offset, hi=len(game_stamps)-1)
     stamp = game_stamps[index]
     home = stamp["score"]["home"]
@@ -62,7 +62,6 @@ def get_score(game_stamps, offset: int):
     if offsets > offset:
         stamp = game_stamps[index-1]
     return home, away
-
 
 
 s = get_score(generate_game(), 60001)
