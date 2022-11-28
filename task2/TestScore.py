@@ -1,22 +1,25 @@
-from unittest import TestCase, main
+from unittest import TestCase, main, skip
+
 from task1.score import generate_game, get_score
 
 
 class TestScore(TestCase):
-
-    def setUp(self) -> None:
-        self.game = generate_game()
-        self.stamps = [{'offset': 0, 'score': {'away': 0, 'home': 0}},
-                       {'offset': 3, 'score': {'away': 1, 'home': 0}},
-                       {'offset': 6, 'score': {'away': 1, 'home': 1}},
-                       {'offset': 9, 'score': {'away': 1, 'home': 2}},
-                       {'offset': 12, 'score': {'away': 2, 'home': 2}},
-                       {'offset': 15, 'score': {'away': 3, 'home': 2}},
-                       {'offset': 18, 'score': {'away': 3, 'home': 2}},
-                       {'offset': 21, 'score': {'away': 3, 'home': 3}}]
+    game = generate_game()
+    stamps = [{'offset': 0, 'score': {'home': 0, 'away': 0}},
+              {'offset': 3, 'score': {'home': 1, 'away': 0}},
+              {'offset': 6, 'score': {'home': 1, 'away': 1}},
+              {'offset': 9, 'score': {'home': 1, 'away': 2}},
+              {'offset': 12, 'score': {'home': 2, 'away': 2}},
+              {'offset': 15, 'score': {'home': 3, 'away': 2}},
+              {'offset': 18, 'score': {'home': 3, 'away': 2}},
+              {'offset': 21, 'score': {'home': 3, 'away': 3}}]
 
     def test_start_offset_function(self):
         self.assertEqual(get_score(self.game, 0), (0, 0))
+
+    def test_value_not_in_stamp(self):
+        self.assertEqual(get_score(self.stamps, 2), (0, 0))
+        self.assertEqual(get_score(self.stamps, 19), (3, 2))
 
     def test_value_stamps(self):
         self.assertEqual(get_score(self.stamps, 3), (1, 0))

@@ -58,11 +58,16 @@ def get_score(game_stamps: list, offset: int):
     away = stamp["score"]["away"]
     offsets = stamp["offset"]
     if offset == offsets:
-        return away, home
-    if offsets > offset:
-        stamp = game_stamps[index-1]
+        return home, away
+    else:
+        if offsets > offset > 0:
+            stamp = game_stamps[index-1]
+            home = stamp["score"]["home"]
+            away = stamp["score"]["away"]
+        if offset < 0:
+            return home, away
     return home, away
 
 
-s = get_score(generate_game(), 60001)
+s = get_score(generate_game(), 1)
 pprint(s)
