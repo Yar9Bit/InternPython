@@ -20,8 +20,14 @@ class TestScore(TestCase):
         self.assertEqual(get_score(self.game, 0), (0, 0))
 
     def test_value_not_in_stamp(self):
-        self.assertEqual(get_score(self.stamps, 2), (0, 0))
+        self.assertEqual(get_score(self.stamps, 1), (0, 0))
+        self.assertEqual(get_score(self.stamps, 4), (1, 0))
+        self.assertEqual(get_score(self.stamps, 7), (1, 1))
+        self.assertEqual(get_score(self.stamps, 10), (1, 2))
+        self.assertEqual(get_score(self.stamps, 13), (2, 2))
+        self.assertEqual(get_score(self.stamps, 16), (3, 2))
         self.assertEqual(get_score(self.stamps, 19), (3, 2))
+        self.assertEqual(get_score(self.stamps, 22), (3, 3))
 
     def test_value_stamps(self):
         self.assertEqual(get_score(self.stamps, 3), (1, 0))
