@@ -4,8 +4,9 @@ from task1.score import generate_game, get_score
 
 class TestScore(TestCase):
 
-    game = generate_game()
-    stamps = [{'offset': 0, 'score': {'away': 0, 'home': 0}},
+    def setUp(self) -> None:
+        self.game = generate_game()
+        self.stamps = [{'offset': 0, 'score': {'away': 0, 'home': 0}},
                        {'offset': 3, 'score': {'away': 1, 'home': 0}},
                        {'offset': 6, 'score': {'away': 1, 'home': 1}},
                        {'offset': 9, 'score': {'away': 1, 'home': 2}},
